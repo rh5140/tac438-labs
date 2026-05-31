@@ -26,6 +26,12 @@ private:
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> CameraBoom;
+	
+protected:
+	
+	/** Number of blue triggers player is overlapping */
+	UPROPERTY(BlueprintReadOnly)
+	int NumBlueTriggers = 0;
 
 public:
 
@@ -44,5 +50,21 @@ public:
 	/** Returns the Camera Boom component **/
 	USpringArmComponent* GetCameraBoom() const { return CameraBoom.Get(); }
 
+	/** Increments number of overlapping blue triggers **/
+	UFUNCTION(BlueprintCallable)
+	void OnBlueTriggerEnter();
+	
+	/** Decrements number of overlapping blue triggers **/
+	UFUNCTION(BlueprintCallable)
+	void OnBlueTriggerExit();
+	
+	UPROPERTY(EditDefaultsOnly)
+	FLinearColor DefaultColor = FLinearColor::White;
+	
+	UPROPERTY(EditDefaultsOnly)
+	FLinearColor BlueTriggerColor = FLinearColor::Blue;
+	
+	UPROPERTY(EditDefaultsOnly)
+	FName BodyColorParameter = FName(TEXT("Paint Tint"));
 };
 

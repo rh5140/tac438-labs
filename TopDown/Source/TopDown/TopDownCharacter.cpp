@@ -60,3 +60,23 @@ void ATopDownCharacter::Tick(float DeltaSeconds)
 
 	// stub
 }
+
+void ATopDownCharacter::OnBlueTriggerEnter()
+{
+	NumBlueTriggers++;
+	if (NumBlueTriggers == 1)
+	{
+		FVector NewColor(BlueTriggerColor.R, BlueTriggerColor.G, BlueTriggerColor.B);
+		GetMesh()->SetVectorParameterValueOnMaterials(BodyColorParameter, NewColor);
+	}
+}
+
+void ATopDownCharacter::OnBlueTriggerExit()
+{
+	NumBlueTriggers--;
+	if (NumBlueTriggers == 0)
+	{
+		FVector NewColor(DefaultColor.R, DefaultColor.G, DefaultColor.B);
+		GetMesh()->SetVectorParameterValueOnMaterials(BodyColorParameter, NewColor);
+	}
+}
