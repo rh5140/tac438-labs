@@ -16,17 +16,7 @@
 
 ATopDownPlayerController::ATopDownPlayerController()
 {
-	bIsTouch = false;
-	bMoveToMouseCursor = false;
-
-	// create the path following comp
-	PathFollowingComponent = CreateDefaultSubobject<UPathFollowingComponent>(TEXT("Path Following Component"));
-
-	// configure the controller
-	bShowMouseCursor = true;
-	DefaultMouseCursor = EMouseCursor::Default;
-	CachedDestination = FVector::ZeroVector;
-	FollowTime = 0.f;
+	bShowMouseCursor = false;
 }
 
 void ATopDownPlayerController::SetupInputComponent()
@@ -46,17 +36,9 @@ void ATopDownPlayerController::SetupInputComponent()
 		// Set up action bindings
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 		{
-			// Setup mouse input events
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ATopDownPlayerController::OnInputStarted);
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnSetDestinationTriggered);
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ATopDownPlayerController::OnSetDestinationReleased);
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &ATopDownPlayerController::OnSetDestinationReleased);
-
-			// Setup touch input events
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ATopDownPlayerController::OnInputStarted);
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnTouchTriggered);
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &ATopDownPlayerController::OnTouchReleased);
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &ATopDownPlayerController::OnTouchReleased);
+			EnhancedInputComponent->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnMoveForward);
+			EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnMoveRight);
+			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnJumpAction);
 		}
 		else
 		{
@@ -65,74 +47,28 @@ void ATopDownPlayerController::SetupInputComponent()
 	}
 }
 
-void ATopDownPlayerController::OnInputStarted()
+void ATopDownPlayerController::OnJumpAction()
 {
-	StopMovement();
-
-	// Update the move destination to wherever the cursor is pointing at
-	UpdateCachedDestination();
-}
-
-void ATopDownPlayerController::OnSetDestinationTriggered()
-{
-	// We flag that the input is being pressed
-	FollowTime += GetWorld()->GetDeltaSeconds();
-	
-	// Update the move destination to wherever the cursor is pointing at
-	UpdateCachedDestination();
-	
-	// Move towards mouse pointer or touch
-	APawn* ControlledPawn = GetPawn();
-	if (ControlledPawn != nullptr)
+	if (ACharacter* MyCharacter = GetCharacter())
 	{
-		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+		MyCharacter->Jump();
 	}
 }
 
-void ATopDownPlayerController::OnSetDestinationReleased()
+void ATopDownPlayerController::OnMoveForward(const FInputActionInstance& Instance)
 {
-	// If it was a short press
-	if (FollowTime <= ShortPressThreshold)
+	if (APawn* MyPawn = GetPawn())
 	{
-		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+		float AxisValue = Instance.GetValue().Get<float>();
+		MyPawn->AddMovementInput(FVector::ForwardVector, AxisValue);
 	}
-
-	FollowTime = 0.f;
 }
 
-// Triggered every frame when the input is held down
-void ATopDownPlayerController::OnTouchTriggered()
+void ATopDownPlayerController::OnMoveRight(const FInputActionInstance& Instance)
 {
-	bIsTouch = true;
-	OnSetDestinationTriggered();
-}
-
-void ATopDownPlayerController::OnTouchReleased()
-{
-	bIsTouch = false;
-	OnSetDestinationReleased();
-}
-
-void ATopDownPlayerController::UpdateCachedDestination()
-{
-	// We look for the location in the world where the player has pressed the input
-	FHitResult Hit;
-	bool bHitSuccessful = false;
-	if (bIsTouch)
+	if (APawn* MyPawn = GetPawn())
 	{
-		bHitSuccessful = GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-	else
-	{
-		bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-
-	// If we hit a surface, cache the location
-	if (bHitSuccessful)
-	{
-		CachedDestination = Hit.Location;
+		float AxisValue = Instance.GetValue().Get<float>();
+		MyPawn->AddMovementInput(FVector::RightVector, AxisValue);
 	}
 }
