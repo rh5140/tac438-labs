@@ -30,10 +30,10 @@ void UPuzzleComponent::SetOutputActive(bool bNewOutputActive)
 	
 	bIsOutputActive = bNewOutputActive;
 	
-	if (AActor* OutputActorPtr = OutputActor.Get())
+	if (AActor* OutActor = OutputActor.Get())
 	{
-		UPuzzleComponent* PuzzleComp = OutputActorPtr->FindComponentByClass<UPuzzleComponent>();
-		NativeReceiveInput(GetOwner(), bNewOutputActive);
+		UPuzzleComponent* PuzzleComp = OutActor->FindComponentByClass<UPuzzleComponent>();
+		PuzzleComp->NativeReceiveInput(GetOwner(), bNewOutputActive);
 	}
 }
 

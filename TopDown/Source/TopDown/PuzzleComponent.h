@@ -23,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(Transient, BlueprintReadOnly)
-	bool bIsOutputActive;
+	bool bIsOutputActive = false;
 	
 	UPROPERTY(EditInstanceOnly)
 	TSoftObjectPtr<AActor> OutputActor;
