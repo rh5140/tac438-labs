@@ -17,6 +17,8 @@ class TOPDOWN_API UPuzzleComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UPuzzleComponent();
+	
+	void DebugDrawOutput();
 
 protected:
 	// Called when the game starts

@@ -2,6 +2,7 @@
 
 
 #include "PuzzleComponent.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values for this component's properties
 UPuzzleComponent::UPuzzleComponent()
@@ -11,6 +12,17 @@ UPuzzleComponent::UPuzzleComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
+}
+
+void UPuzzleComponent::DebugDrawOutput()
+{
+#if ENABLE_DRAW_DEBUG
+	if (AActor* OutActor = OutputActor.Get())
+	{
+		const FColor DrawColor = bIsOutputActive ? FColor::Green : FColor::Black;
+		DrawDebugDirectionalArrow(GetWorld(), GetOwner()->GetActorLocation(), OutActor->GetActorLocation(), 150.0f, DrawColor);
+	}
+#endif
 }
 
 
