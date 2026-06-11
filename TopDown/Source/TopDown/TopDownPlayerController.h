@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
 	TObjectPtr<class UInputAction> MoveRightAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
+	TObjectPtr<class UInputAction> InteractAction;
+
 public:
 
 	/** Constructor */
@@ -51,6 +54,7 @@ protected:
 	void OnJumpAction();
 	void OnMoveForward(const FInputActionInstance& Instance);
 	void OnMoveRight(const FInputActionInstance& Instance);
+	void OnInteractAction(const FInputActionInstance& Instance);
 	
 };
 

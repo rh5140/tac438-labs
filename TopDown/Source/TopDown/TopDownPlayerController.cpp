@@ -11,6 +11,7 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
+#include "InteractSubsystem.h"
 #include "Engine/LocalPlayer.h"
 #include "TopDown.h"
 
@@ -39,6 +40,7 @@ void ATopDownPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnMoveForward);
 			EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnMoveRight);
 			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnJumpAction);
+			EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnInteractAction);
 		}
 		else
 		{
@@ -70,5 +72,13 @@ void ATopDownPlayerController::OnMoveRight(const FInputActionInstance& Instance)
 	{
 		float AxisValue = Instance.GetValue().Get<float>();
 		MyPawn->AddMovementInput(FVector::RightVector, AxisValue);
+	}
+}
+
+void ATopDownPlayerController::OnInteractAction(const FInputActionInstance& Instance)
+{
+	if (UInteractSubsystem* Subsystem = GetWorld()->GetSubsystem<UInteractSubsystem>())
+	{
+		Subsystem->PerformInteract();
 	}
 }
