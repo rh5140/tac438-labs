@@ -40,25 +40,31 @@ void UInteractSubsystem::PerformInteract()
 	}
 }
 
+TWeakObjectPtr<class UInteractComponent> UInteractSubsystem::GetBestCandidate()
+{
+	return BestCandidate;
+}
+
 void UInteractSubsystem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	BestCandidate = nullptr;
-	
 	if (ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, 0))
 	{
 		FVector PlayerPos = Character->GetActorLocation();
-		float BestDistance = TNumericLimits<float>::Max();
+		float BestDistance = -1;
 		
 		for (const auto& WeakPtr : InteractComponents)
 		{
 			if (UInteractComponent* Component = WeakPtr.Get())
 			{
 				float Distance = FVector::Distance(PlayerPos, Component->GetOwner()->GetActorLocation());
-				if (Distance < BestDistance)
+				if (BestDistance < 0 || Distance < BestDistance)
 				{
+					if (BestCandidate != nullptr) BestCandidate->ToggleGlow(false);
+					Component->ToggleGlow(true);
 					BestCandidate = Component;
+					BestDistance = Distance;
 				}
 			}
 		}

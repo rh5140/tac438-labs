@@ -25,6 +25,8 @@ void UInteractComponent::BeginPlay()
 		Subsystem->AddComponent(this);
 	}
 	
+	// Bind
+	
 }
 
 void UInteractComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -49,5 +51,20 @@ void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 void UInteractComponent::NativeInteract()
 {
 	OnInteract.Broadcast();
+}
+
+void UInteractComponent::ToggleGlow(bool IsGlowing)
+{
+	if (UStaticMeshComponent* Mesh = GetOwner()->FindComponentByClass<UStaticMeshComponent>())
+	{
+		if (IsGlowing)
+		{
+			Mesh->SetVectorParameterValueOnMaterials(GlowMaterialParameterName, FVector(GlowColor));
+		}
+		else
+		{
+			Mesh->SetVectorParameterValueOnMaterials(GlowMaterialParameterName, FVector(DefaultColor));	
+		}
+	}
 }
 

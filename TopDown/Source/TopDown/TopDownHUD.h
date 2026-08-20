@@ -13,7 +13,9 @@ UCLASS()
 class TOPDOWN_API ATopDownHUD : public AHUD
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void BeginPlay() override;
 	virtual void DrawHUD() override;
-	
+	UInteractSubsystem* Subsystem;
+	APlayerController* PlayerController;
 };

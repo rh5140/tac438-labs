@@ -22,6 +22,9 @@ public:
 	
 	void PerformInteract();
 	
+	// Getter
+	TWeakObjectPtr<class UInteractComponent> GetBestCandidate();
+	
 protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const override;
