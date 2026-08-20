@@ -24,6 +24,10 @@ class ATopDownPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+public:
+	/** Constructor */
+	ATopDownPlayerController();
+	
 protected:
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -40,13 +44,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
 	TObjectPtr<class UInputAction> InteractAction;
-
-public:
-
-	/** Constructor */
-	ATopDownPlayerController();
-
-protected:
 
 	/** Initialize input bindings */
 	virtual void SetupInputComponent() override;

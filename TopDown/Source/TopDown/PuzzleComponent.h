@@ -45,7 +45,5 @@ protected:
 	
 	UPROPERTY(BlueprintAssignable)
 	FPuzzleComponentOnPuzzleReset OnPuzzleReset;
-	
-public:	
 		
 };

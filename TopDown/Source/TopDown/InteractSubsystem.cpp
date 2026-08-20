@@ -49,6 +49,7 @@ void UInteractSubsystem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	// Highlights interact component most directly in front of player within 200 units
 	if (ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, 0))
 	{
 		FVector PlayerPos = Character->GetActorLocation();

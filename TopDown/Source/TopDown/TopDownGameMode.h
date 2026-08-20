@@ -17,7 +17,6 @@ class ATopDownGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-
 	/** Constructor */
 	ATopDownGameMode();
 };

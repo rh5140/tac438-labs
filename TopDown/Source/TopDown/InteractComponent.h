@@ -21,6 +21,14 @@ public:
 	virtual void BeginPlay() override;
 	
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void NativeInteract();
+	
+	// Called on interaction by InteractSubsystem
+	virtual void ToggleGlow(bool IsGlowing);
 
 protected:
 	UPROPERTY(BlueprintAssignable)
@@ -34,12 +42,5 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Glow)
 	FColor DefaultColor = FColor::Black;
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	virtual void NativeInteract();
-	
-	// Called on interaction by InteractSubsystem
-	virtual void ToggleGlow(bool IsGlowing);
 };

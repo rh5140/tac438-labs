@@ -17,24 +17,7 @@ class ATopDownCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-private:
-
-	/** Top down camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCameraComponent> TopDownCameraComponent;
-
-	/** Camera boom positioning the camera above the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USpringArmComponent> CameraBoom;
-	
-protected:
-	
-	/** Number of blue triggers player is overlapping */
-	UPROPERTY(BlueprintReadOnly)
-	int NumBlueTriggers = 0;
-
 public:
-
 	/** Constructor */
 	ATopDownCharacter();
 
@@ -66,5 +49,20 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	FName BodyColorParameter = FName(TEXT("Paint Tint"));
+
+protected:
+	/** Number of blue triggers player is overlapping */
+	UPROPERTY(BlueprintReadOnly)
+	int NumBlueTriggers = 0;
+
+private:
+	/** Top down camera */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCameraComponent> TopDownCameraComponent;
+
+	/** Camera boom positioning the camera above the character */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USpringArmComponent> CameraBoom;
+	
 };
 
