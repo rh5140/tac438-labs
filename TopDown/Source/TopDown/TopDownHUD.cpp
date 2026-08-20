@@ -4,7 +4,6 @@
 #include "TopDownHUD.h"
 #include "DrawDebugHelpers.h"
 #include "InteractComponent.h"
-#include "InteractSubsystem.h"
 #include "PuzzleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -23,13 +22,13 @@ void ATopDownHUD::DrawHUD()
 	TWeakObjectPtr<class UInteractComponent> WeakPtr = Subsystem->GetBestCandidate();
 	if (UInteractComponent* Component = WeakPtr.Get())
 	{
-		FVector2D CandidateScreenPosition;
-		UGameplayStatics::ProjectWorldToScreen(PlayerController, Component->GetOwner()->GetActorLocation(), CandidateScreenPosition);
+		FVector2D CandidateScreenPos;
+		UGameplayStatics::ProjectWorldToScreen(PlayerController, Component->GetOwner()->GetActorLocation(), CandidateScreenPos);
 		FString InteractText = TEXT("[E] - Interact");
 		float TextWidth;
 		float TextHeight;
 		GetTextSize(InteractText, TextWidth, TextHeight, nullptr, 3.0);
-		DrawText(InteractText, FLinearColor::Red, CandidateScreenPosition.X - TextWidth/2, CandidateScreenPosition.Y - TextHeight/2, nullptr, 3.0f);
+		DrawText(InteractText, FLinearColor::Red, CandidateScreenPos.X - TextWidth/2, CandidateScreenPos.Y - TextHeight/2, nullptr, 3.0f);
 	}
 	
 	

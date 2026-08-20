@@ -52,19 +52,33 @@ void UInteractSubsystem::Tick(float DeltaTime)
 	if (ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, 0))
 	{
 		FVector PlayerPos = Character->GetActorLocation();
-		float BestDistance = -1;
+		float MaxDistance = 200;
+		
+		float LargestDotProduct = 0;
+		BestCandidate = nullptr;
 		
 		for (const auto& WeakPtr : InteractComponents)
 		{
 			if (UInteractComponent* Component = WeakPtr.Get())
 			{
-				float Distance = FVector::Distance(PlayerPos, Component->GetOwner()->GetActorLocation());
-				if (BestDistance < 0 || Distance < BestDistance)
+				FVector ComponentPos = Component->GetOwner()->GetActorLocation();
+				float Distance = FVector::Distance(PlayerPos, ComponentPos);
+				FVector PlayerToComponent = ComponentPos - PlayerPos;
+				float DotProduct = FVector::DotProduct(Character->GetActorForwardVector(), PlayerToComponent);
+					
+				if (DotProduct > LargestDotProduct && Distance < MaxDistance)
 				{
-					if (BestCandidate != nullptr) BestCandidate->ToggleGlow(false);
+					if (BestCandidate != nullptr)
+					{
+						BestCandidate->ToggleGlow(false);
+					}
 					Component->ToggleGlow(true);
 					BestCandidate = Component;
-					BestDistance = Distance;
+					LargestDotProduct = DotProduct;
+				}
+				else
+				{
+					Component->ToggleGlow(false);
 				}
 			}
 		}
