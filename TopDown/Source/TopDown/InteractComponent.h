@@ -29,10 +29,16 @@ public:
 	
 	// Called on interaction by InteractSubsystem
 	virtual void ToggleGlow(bool IsGlowing);
+	
+	// Getter for IsEnabled
+	bool GetIsEnabled();
 
 protected:
 	UPROPERTY(BlueprintAssignable)
 	FInteractDelegate OnInteract;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsEnabled = true;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Glow)
 	FName GlowMaterialParameterName = "InteractGlow";
@@ -42,5 +48,6 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Glow)
 	FColor DefaultColor = FColor::Black;
+	
 
 };

@@ -22,7 +22,7 @@ public:
 	
 	void PerformInteract();
 	
-	// Getter
+	// Getter for best interaction candidate
 	TWeakObjectPtr<class UInteractComponent> GetBestCandidate();
 	
 protected:

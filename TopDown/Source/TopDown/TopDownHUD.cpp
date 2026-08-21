@@ -27,8 +27,7 @@ void ATopDownHUD::DrawHUD()
 		UGameplayStatics::ProjectWorldToScreen(PlayerController, Component->GetOwner()->GetActorLocation(), CandidateScreenPos);
 		
 		FString InteractText = TEXT("[E] - Interact");
-		float TextWidth;
-		float TextHeight;
+		float TextWidth, TextHeight;
 		GetTextSize(InteractText, TextWidth, TextHeight, nullptr, 3.0);
 		
 		DrawText(InteractText, FLinearColor::Red, CandidateScreenPos.X - TextWidth/2, CandidateScreenPos.Y - TextHeight/2, nullptr, 3.0f);

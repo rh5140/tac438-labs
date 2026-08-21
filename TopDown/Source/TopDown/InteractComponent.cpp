@@ -50,7 +50,10 @@ void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UInteractComponent::NativeInteract()
 {
-	OnInteract.Broadcast();
+	if (IsEnabled)
+	{
+		OnInteract.Broadcast();
+	}
 }
 
 void UInteractComponent::ToggleGlow(bool IsGlowing)
@@ -66,5 +69,10 @@ void UInteractComponent::ToggleGlow(bool IsGlowing)
 			Mesh->SetVectorParameterValueOnMaterials(GlowMaterialParameterName, FVector(DefaultColor));	
 		}
 	}
+}
+
+bool UInteractComponent::GetIsEnabled()
+{
+	return IsEnabled;
 }
 
