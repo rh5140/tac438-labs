@@ -54,6 +54,16 @@ void UPuzzleComponent::NativeReceiveInput(TObjectPtr<AActor> Sender, bool bNewIn
 	OnReceiveInput.Broadcast(Sender, bNewIncomingValue);
 }
 
+void UPuzzleComponent::ChangeOutputActor(AActor* NewOutputActor)
+{
+	OutputActor = NewOutputActor;
+	if (OutputActor != nullptr && bIsOutputActive)
+	{
+		UPuzzleComponent* PuzzleComp = OutputActor->FindComponentByClass<UPuzzleComponent>();
+		PuzzleComp->NativeReceiveInput(GetOwner(), bIsOutputActive);
+	}
+}
+
 void UPuzzleComponent::PuzzleReset()
 {
 	SetOutputActive(false);

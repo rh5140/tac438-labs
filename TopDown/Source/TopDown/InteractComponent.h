@@ -30,7 +30,7 @@ public:
 	// Called on interaction by InteractSubsystem
 	virtual void ToggleGlow(bool IsGlowing);
 	
-	// Getter for IsEnabled
+	// Getter for bIsEnabled
 	bool GetIsEnabled();
 
 protected:
@@ -38,7 +38,7 @@ protected:
 	FInteractDelegate OnInteract;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsEnabled = true;
+	bool bIsEnabled = true;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Glow)
 	FName GlowMaterialParameterName = "InteractGlow";

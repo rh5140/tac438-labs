@@ -50,7 +50,7 @@ void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UInteractComponent::NativeInteract()
 {
-	if (IsEnabled)
+	if (bIsEnabled)
 	{
 		OnInteract.Broadcast();
 	}
@@ -73,6 +73,6 @@ void UInteractComponent::ToggleGlow(bool IsGlowing)
 
 bool UInteractComponent::GetIsEnabled()
 {
-	return IsEnabled;
+	return bIsEnabled;
 }
 

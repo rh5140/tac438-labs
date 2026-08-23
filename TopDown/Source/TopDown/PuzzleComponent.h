@@ -19,6 +19,26 @@ public:
 	UPuzzleComponent();
 	
 	void DebugDrawOutput();
+	
+	UPROPERTY(BlueprintAssignable)
+	FPuzzleComponentOnReceiveInput OnReceiveInput;
+	
+	UPROPERTY(BlueprintAssignable)
+	FPuzzleComponentOnPuzzleReset OnPuzzleReset;
+	
+	/** Sets whether output is active */
+	UFUNCTION(BlueprintCallable)
+	virtual void SetOutputActive(bool bNewOutputActive);
+
+	virtual void NativeReceiveInput(TObjectPtr<AActor> Sender, bool bNewIncomingValue);
+	
+	// Change output actor
+	UFUNCTION(BlueprintCallable)
+	void ChangeOutputActor(AActor* NewOutputActor);
+
+	/** Resets puzzle */
+	UFUNCTION(BlueprintCallable)
+	virtual void PuzzleReset();	
 
 protected:
 	// Called when the game starts
@@ -30,20 +50,4 @@ protected:
 	UPROPERTY(EditInstanceOnly)
 	TSoftObjectPtr<AActor> OutputActor;
 	
-	/** Sets whether output is active */
-	UFUNCTION(BlueprintCallable)
-	virtual void SetOutputActive(bool bNewOutputActive);
-
-	virtual void NativeReceiveInput(TObjectPtr<AActor> Sender, bool bNewIncomingValue);
-	
-	/** Resets puzzle */
-	UFUNCTION(BlueprintCallable)
-	virtual void PuzzleReset();
-	
-	UPROPERTY(BlueprintAssignable)
-	FPuzzleComponentOnReceiveInput OnReceiveInput;
-	
-	UPROPERTY(BlueprintAssignable)
-	FPuzzleComponentOnPuzzleReset OnPuzzleReset;
-		
 };
