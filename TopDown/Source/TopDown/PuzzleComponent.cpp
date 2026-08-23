@@ -17,6 +17,11 @@ UPuzzleComponent::UPuzzleComponent()
 void UPuzzleComponent::DebugDrawOutput()
 {
 #if ENABLE_DRAW_DEBUG
+	if (IsRegistered())
+	{
+		DrawDebugString(GetWorld(), GetOwner()->GetActorLocation(), GetOwner()->GetName(), 0, FColor::White, 0.1);
+
+	}
 	if (AActor* OutActor = OutputActor.Get())
 	{
 		const FColor DrawColor = bIsOutputActive ? FColor::Green : FColor::Black;
