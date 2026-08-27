@@ -29,9 +29,22 @@ void UFireComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void UFireComponent::HandleOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// If on-fire component overlaps with one that's not, spread the fire
+	if (UFireComponent* FireComponent = OtherActor->FindComponentByClass<UFireComponent>())
+	{
+		if (bIsOnFire && !FireComponent->bIsOnFire)
+		{
+			FireComponent->NativeCatchFire();
+		}
+		else if (!bIsOnFire && FireComponent->bIsOnFire)
+		{
+			NativeCatchFire();
+		}
+	}
 }
 
 void UFireComponent::NativeCatchFire()
 {
 	OnCatchFire.Broadcast();
+	bIsOnFire = true;
 }
