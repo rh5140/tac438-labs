@@ -32,6 +32,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsOnFire = false;
 	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> SoundFx;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UParticleSystem> ParticleFx;
+	
 	UPROPERTY(BlueprintAssignable)
 	FFireComponentOnCatchFire OnCatchFire;
 	

@@ -2,6 +2,7 @@
 
 
 #include "FireComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 UFireComponent::UFireComponent()
 {
@@ -47,4 +48,6 @@ void UFireComponent::NativeCatchFire()
 {
 	OnCatchFire.Broadcast();
 	bIsOnFire = true;
+	UGameplayStatics::SpawnSoundAttached(SoundFx, this);
+	UGameplayStatics::SpawnEmitterAttached(ParticleFx, this);
 }
