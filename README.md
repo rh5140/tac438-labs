@@ -6,6 +6,7 @@ Following along with USC's course on [Advanced Gameplay Programming in Unreal En
 - Set up Blueprint function library ([TopDownBPLibrary.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownBPLibrary.h), [TopDownBPLibrary.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownBPLibrary.cpp))
 - Implement togglable puzzle debug visualization
 - Highlight interactable component most directly in front of player within 200 units ([InteractSubsystem.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractSubsystem.cpp))
+- [Demo video](https://youtu.be/smzNsGR_UqQ)
 ```cpp
 void UInteractSubsystem::Tick(float DeltaTime)
 {
