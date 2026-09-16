@@ -3,9 +3,35 @@ Following along with USC's course on [Advanced Gameplay Programming in Unreal En
 
 ## Lab 4 - Physics and Sequences
 - Script pressure plate and swing in Blueprints
-- Implement Fire Component to allow objects to catch on fire with C++ ([FireComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.h), [FireComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.cpp))
 - Create physics-based puzzles that require spreading fire to solve
+- Implement Fire Component to allow objects to catch on fire with C++ ([FireComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.h), [FireComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.cpp))
 - [Demo video](https://youtu.be/KJaGJk-F92Y)
+```cpp
+void UFireComponent::HandleOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	// If on-fire component overlaps with one that's not, spread the fire
+	if (UFireComponent* FireComponent = OtherActor->FindComponentByClass<UFireComponent>())
+	{
+		if (bIsOnFire && !FireComponent->bIsOnFire)
+		{
+			FireComponent->NativeCatchFire();
+		}
+		else if (!bIsOnFire && FireComponent->bIsOnFire)
+		{
+			NativeCatchFire();
+		}
+	}
+}
+
+void UFireComponent::NativeCatchFire()
+{
+	OnCatchFire.Broadcast();
+	bIsOnFire = true;
+	UGameplayStatics::SpawnSoundAttached(SoundFx, this);
+	UGameplayStatics::SpawnEmitterAttached(ParticleFx, this);
+}
+```
 
 ## Lab 3 - Interactions and More Puzzles
 - Implement Interact Subsystem ([InteractSubsystem.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractSubsystem.h), [InteractSubsystem.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractSubsystem.cpp)) and Interact Component ([InteractComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractComponent.h), [InteractComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractComponent.cpp)) in C++
