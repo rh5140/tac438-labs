@@ -1,6 +1,12 @@
 # tac438-labs
 Following along with USC's course on [Advanced Gameplay Programming in Unreal Engine](https://tac438-20263.github.io/)
 
+## Lab 4 - Physics and Sequences
+- Script pressure plate and swing in Blueprints
+- Implement Fire Component to allow objects to catch on fire with C++ ([FireComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.h), [FireComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.cpp))
+- Create physics-based puzzles that require spreading fire to solve
+- [Demo video](https://youtu.be/KJaGJk-F92Y)
+
 ## Lab 3 - Interactions and More Puzzles
 - Implement Interact Subsystem ([InteractSubsystem.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractSubsystem.h), [InteractSubsystem.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractSubsystem.cpp)) and Interact Component ([InteractComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractComponent.h), [InteractComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractComponent.cpp)) in C++
 - Set up Blueprint function library ([TopDownBPLibrary.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownBPLibrary.h), [TopDownBPLibrary.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownBPLibrary.cpp))
