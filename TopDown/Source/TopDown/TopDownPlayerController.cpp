@@ -41,6 +41,7 @@ void ATopDownPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnMoveRight);
 			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnJumpAction);
 			EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnInteractAction);
+			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnCrouchAction);
 		}
 		else
 		{
@@ -81,4 +82,17 @@ void ATopDownPlayerController::OnInteractAction(const FInputActionInstance& Inst
 	{
 		Subsystem->PerformInteract();
 	}
+}
+
+void ATopDownPlayerController::OnCrouchAction(const FInputActionInstance& Instance)
+{
+	
+}
+
+void ATopDownPlayerController::Crouch()
+{
+}
+
+void ATopDownPlayerController::UnCrouch()
+{
 }
