@@ -14,6 +14,7 @@
 #include "InteractSubsystem.h"
 #include "Engine/LocalPlayer.h"
 #include "TopDown.h"
+#include "UObject/UnrealTypePrivate.h"
 
 ATopDownPlayerController::ATopDownPlayerController()
 {
@@ -41,6 +42,7 @@ void ATopDownPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnMoveRight);
 			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnJumpAction);
 			EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnInteractAction);
+			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnCrouchAction);
 		}
 		else
 		{
@@ -80,5 +82,20 @@ void ATopDownPlayerController::OnInteractAction(const FInputActionInstance& Inst
 	if (UInteractSubsystem* Subsystem = GetWorld()->GetSubsystem<UInteractSubsystem>())
 	{
 		Subsystem->PerformInteract();
+	}
+}
+
+void ATopDownPlayerController::OnCrouchAction(const FInputActionInstance& Instance)
+{
+	if (ACharacter* MyCharacter = GetCharacter())
+	{
+		if (MyCharacter->IsCrouched())
+		{
+			MyCharacter->UnCrouch();
+		}
+		else
+		{
+			MyCharacter->Crouch();
+		}
 	}
 }
