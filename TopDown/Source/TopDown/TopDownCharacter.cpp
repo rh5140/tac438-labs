@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TopDownCharacter.h"
+#include "TopDownAbilitySystemComponent.h"
+#include "TopDownAttributeSet.h"
+#include "TopDownCharMovementComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
@@ -11,7 +14,8 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 
-ATopDownCharacter::ATopDownCharacter()
+ATopDownCharacter::ATopDownCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UTopDownCharMovementComponent>(CharacterMovementComponentName))
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -41,6 +45,9 @@ ATopDownCharacter::ATopDownCharacter()
 
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false;
+	
+	AbilitySystemComponent = CreateDefaultSubobject<UTopDownAbilitySystemComponent>(TEXT("AbilitySystem"));
+	DefaultAttributeSet = CreateDefaultSubobject<UTopDownAttributeSet>(TEXT("DefaultAttributeSet"));
 
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
@@ -50,8 +57,7 @@ ATopDownCharacter::ATopDownCharacter()
 void ATopDownCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// stub
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
 void ATopDownCharacter::Tick(float DeltaSeconds)
@@ -79,4 +85,27 @@ void ATopDownCharacter::OnBlueTriggerExit()
 		FVector NewColor(DefaultColor.R, DefaultColor.G, DefaultColor.B);
 		GetMesh()->SetVectorParameterValueOnMaterials(BodyColorParameter, NewColor);
 	}
+}
+
+UAbilitySystemComponent* ATopDownCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void ATopDownCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	Super::OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	
+	// Apply crouching effect
+	FGameplayEffectContextHandle ContextHandle;
+	CrouchingEffectHandle = AbilitySystemComponent->BP_ApplyGameplayEffectToSelf(CrouchingEffect, 0.0f, ContextHandle);
+}
+
+void ATopDownCharacter::OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	Super::OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	
+	// Remove crouching effect
+	AbilitySystemComponent->RemoveActiveGameplayEffect(CrouchingEffectHandle);
+	CrouchingEffectHandle.Invalidate();
 }
