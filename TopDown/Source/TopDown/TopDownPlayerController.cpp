@@ -2,19 +2,15 @@
 
 #include "TopDownPlayerController.h"
 #include "GameFramework/Pawn.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "NiagaraSystem.h"
-#include "NiagaraFunctionLibrary.h"
 #include "TopDownCharacter.h"
+#include "TopDownAbilitySystemComponent.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
-#include "Navigation/PathFollowingComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "InteractSubsystem.h"
 #include "Engine/LocalPlayer.h"
 #include "TopDown.h"
-#include "UObject/UnrealTypePrivate.h"
 
 ATopDownPlayerController::ATopDownPlayerController()
 {
@@ -87,6 +83,13 @@ void ATopDownPlayerController::OnInteractAction(const FInputActionInstance& Inst
 
 void ATopDownPlayerController::OnCrouchAction(const FInputActionInstance& Instance)
 {
+	if (ATopDownCharacter* TopDownChar = GetOwner<ATopDownCharacter>())
+	{
+		const FGameplayTag ImmobileTag = FGameplayTag::RequestGameplayTag("Debuff.Immobile", false);
+		if (TopDownChar->AbilitySystemComponent->HasMatchingGameplayTag(ImmobileTag))
+			return;
+	}
+	
 	if (ACharacter* MyCharacter = GetCharacter())
 	{
 		if (MyCharacter->IsCrouched())

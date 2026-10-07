@@ -19,6 +19,8 @@ public:
 
 	virtual float GetMaxSpeed() const override;
 	
+	virtual FRotator ComputeOrientToMovementRotation(const FRotator& CurrentRotation, float DeltaTime, FRotator& DeltaRotation) const override;
+	
 private:
 	TObjectPtr<class ATopDownCharacter> TopDownChar;
 };

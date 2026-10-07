@@ -60,7 +60,7 @@ public:
 
 	UPROPERTY()
 	TObjectPtr<class UTopDownAttributeSet> DefaultAttributeSet;
-
+	
 protected:
 	/** Number of blue triggers player is overlapping */
 	UPROPERTY(BlueprintReadOnly)
