@@ -29,6 +29,10 @@ public:
 
 	/** Update */
 	virtual void Tick(float DeltaSeconds) override;
+	
+	// Crouch overrides
+	virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
+	virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
 	/** Returns the camera component **/
 	UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent.Get(); }
@@ -61,6 +65,27 @@ public:
 	UPROPERTY()
 	TObjectPtr<class UTopDownAttributeSet> DefaultAttributeSet;
 	
+	// Gameplay abilities that should be given on begin play
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Abilities)
+	TMap<FName, TSubclassOf<class UGameplayAbility>> InitialGameplayAbilities;
+	
+	/**
+	 *  Give character a gameplay ability and track w/ specific name
+	 *  @param AbilityName
+	 *  @param AbilityClass
+	 */
+	UFUNCTION(BlueprintCallable, Category = Abilities)
+	void GiveAbility(const FName& AbilityName, TSubclassOf<class UGameplayAbility> AbilityClass);
+	
+	/**
+	 * Try to activate ability by given name
+	 * 
+	 * @param AbilityName
+	 * @return true if ability activation worked
+	 */
+	UFUNCTION(BlueprintCallable, Category = Abilities)
+	bool TryActivateAbility(const FName& AbilityName);
+	
 protected:
 	/** Number of blue triggers player is overlapping */
 	UPROPERTY(BlueprintReadOnly)
@@ -72,6 +97,10 @@ protected:
 	
 	// The handle to track when crouching effect is active
 	FActiveGameplayEffectHandle CrouchingEffectHandle;
+	
+	// Current Gameplay Abilities (do not directly modify)
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Abilities)
+	TMap<FName, TSubclassOf<class UGameplayAbility>> GameplayAbilities;
 
 private:
 	/** Top down camera */
@@ -81,10 +110,6 @@ private:
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> CameraBoom;
-	
-	virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
-	
-	virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 	
 };
 

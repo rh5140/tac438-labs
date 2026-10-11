@@ -48,6 +48,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
 	TObjectPtr<class UInputAction> CrouchAction;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
+	TObjectPtr<class UInputAction> DashAction;
+	
 	/** Initialize input bindings */
 	virtual void SetupInputComponent() override;
 	
@@ -56,6 +59,7 @@ protected:
 	void OnMoveRight(const FInputActionInstance& Instance);
 	void OnInteractAction(const FInputActionInstance& Instance);
 	void OnCrouchAction(const FInputActionInstance& Instance);
+	void OnDashAction(const FInputActionInstance& Instance);
 };
 
 

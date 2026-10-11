@@ -11,6 +11,7 @@
 #include "InteractSubsystem.h"
 #include "Engine/LocalPlayer.h"
 #include "TopDown.h"
+#include "TopDownBPLibrary.h"
 
 ATopDownPlayerController::ATopDownPlayerController()
 {
@@ -39,6 +40,7 @@ void ATopDownPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnJumpAction);
 			EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnInteractAction);
 			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnCrouchAction);
+			EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Triggered, this, &ATopDownPlayerController::OnDashAction);
 		}
 		else
 		{
@@ -83,7 +85,7 @@ void ATopDownPlayerController::OnInteractAction(const FInputActionInstance& Inst
 
 void ATopDownPlayerController::OnCrouchAction(const FInputActionInstance& Instance)
 {
-	if (ATopDownCharacter* TopDownChar = GetOwner<ATopDownCharacter>())
+	if (ATopDownCharacter* TopDownChar = UTopDownBPLibrary::GetTopDownCharacter(this, 0))
 	{
 		const FGameplayTag ImmobileTag = FGameplayTag::RequestGameplayTag("Debuff.Immobile", false);
 		if (TopDownChar->AbilitySystemComponent->HasMatchingGameplayTag(ImmobileTag))
@@ -100,5 +102,14 @@ void ATopDownPlayerController::OnCrouchAction(const FInputActionInstance& Instan
 		{
 			MyCharacter->Crouch();
 		}
+	}
+}
+
+void ATopDownPlayerController::OnDashAction(const FInputActionInstance& Instance)
+{
+	
+	if (ATopDownCharacter* TopDownChar = UTopDownBPLibrary::GetTopDownCharacter(this, 0))
+	{
+		TopDownChar->TryActivateAbility("Dash");
 	}
 }

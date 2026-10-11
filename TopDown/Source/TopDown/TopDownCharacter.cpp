@@ -1,12 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TopDownCharacter.h"
+
+#include "AIController.h"
 #include "TopDownAbilitySystemComponent.h"
 #include "TopDownAttributeSet.h"
 #include "TopDownCharMovementComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
-#include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -58,6 +59,12 @@ void ATopDownCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	
+	// Grant initial abilities
+	for (const auto& Ability : InitialGameplayAbilities)
+	{
+		GiveAbility(Ability.Key, Ability.Value);
+	}
 }
 
 void ATopDownCharacter::Tick(float DeltaSeconds)
@@ -90,6 +97,21 @@ void ATopDownCharacter::OnBlueTriggerExit()
 UAbilitySystemComponent* ATopDownCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void ATopDownCharacter::GiveAbility(const FName& AbilityName, TSubclassOf<class UGameplayAbility> AbilityClass)
+{
+	AbilitySystemComponent->GiveAbility(AbilityClass);
+	GameplayAbilities.Emplace(AbilityName, AbilityClass);
+}
+
+bool ATopDownCharacter::TryActivateAbility(const FName& AbilityName)
+{
+	if (GameplayAbilities.Contains(AbilityName))
+	{
+		return AbilitySystemComponent->TryActivateAbilityByClass(GameplayAbilities[AbilityName]);
+	}
+	return false;
 }
 
 void ATopDownCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
