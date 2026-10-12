@@ -1,7 +1,61 @@
 # tac438-labs
 Following along with USC's course on [Advanced Gameplay Programming in Unreal Engine](https://tac438-20263.github.io/)
 
-## Lab 4 - Physics and Sequences
+## Lab 5 - GAS and Animations ([lab-5](https://github.com/rh5140/tac438-labs/tree/lab5))
+- Set up animations and GAS with C++ classes for Top Down Attribute Set ([TopDownAttributeSet.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAttributeSet.h), [TopDownAttributeSet.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAttributeSet.cpp)) and Top Down Ability System Component ([TopDownAbilitySystemComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAbilitySystemComponent.h), [TopDownAbilitySystemComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAbilitySystemComponent.cpp))
+- Implement subclasses for AnimNotifyState ([AnimNotifyState_ApplyEffect.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/AnimNotifyState_ApplyEffect.h), [AnimNotifyState_ApplyEffect.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/AnimNotifyState_ApplyEffect.cpp)) and TriggerBox ([TriggerBox_GameEffect.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TriggerBox_GameEffect.h), [TriggerBox_GameEffect.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TriggerBox_GameEffect.cpp)) to apply Gameplay Effects
+- Implement crouch/uncrouch with Gameplay Effect (cut move speed in half), Animation Montage, and Anim Notify (prevent crouch/uncrouch spam)
+```cpp
+void ATopDownPlayerController::OnCrouchAction(const FInputActionInstance& Instance)
+{
+	if (ATopDownCharacter* TopDownChar = UTopDownBPLibrary::GetTopDownCharacter(this, 0))
+	{
+		const FGameplayTag ImmobileTag = FGameplayTag::RequestGameplayTag("Debuff.Immobile", false);
+		if (TopDownChar->AbilitySystemComponent->HasMatchingGameplayTag(ImmobileTag))
+			return;
+	}
+	
+	if (ACharacter* MyCharacter = GetCharacter())
+	{
+		if (MyCharacter->IsCrouched())
+		{
+			MyCharacter->UnCrouch();
+		}
+		else
+		{
+			MyCharacter->Crouch();
+		}
+	}
+}
+```
+```cpp
+void ATopDownCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	Super::OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	
+	// Apply crouching effect
+	FGameplayEffectContextHandle ContextHandle;
+	CrouchingEffectHandle = AbilitySystemComponent->BP_ApplyGameplayEffectToSelf(CrouchingEffect, 0.0f, ContextHandle);
+}
+
+void ATopDownCharacter::OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	Super::OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	
+	// Remove crouching effect
+	AbilitySystemComponent->RemoveActiveGameplayEffect(CrouchingEffectHandle);
+	CrouchingEffectHandle.Invalidate();
+}
+```
+- Implement dash ability with Gameplay Ability, Animation Montage, Anim Notifies (play sound, enable i-frames), and Gameplay Cue (i-frame)
+- Implement burning Gameplay Effect applied by TriggerBox_ApplyEffect
+- Implement death with Gameplay Ability, Animation Montage, and ragdolling mesh in C++
+  - <img width="2278" height="1078" alt="image" src="https://github.com/user-attachments/assets/ccb7bcbb-a0b8-4508-9ad2-0bb4e71d4688" />
+
+- [Demo video](https://youtu.be/ofE2rMG-hUM)
+
+
+## Lab 4 - Physics and Sequences ([lab-4](https://github.com/rh5140/tac438-labs/tree/lab4))
 - Script pressure plate and swing in Blueprints
 - Create physics-based puzzles that require spreading fire to solve
 - Implement Fire Component to allow objects to catch on fire with C++ ([FireComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.h), [FireComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/FireComponent.cpp))
@@ -33,7 +87,7 @@ void UFireComponent::NativeCatchFire()
 }
 ```
 
-## Lab 3 - Interactions and More Puzzles
+## Lab 3 - Interactions and More Puzzles ([lab-3](https://github.com/rh5140/tac438-labs/tree/lab3))
 - Implement Interact Subsystem ([InteractSubsystem.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractSubsystem.h), [InteractSubsystem.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractSubsystem.cpp)) and Interact Component ([InteractComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractComponent.h), [InteractComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/InteractComponent.cpp)) in C++
 - Set up Blueprint function library ([TopDownBPLibrary.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownBPLibrary.h), [TopDownBPLibrary.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownBPLibrary.cpp))
 - Implement togglable puzzle debug visualization
@@ -82,7 +136,7 @@ void UInteractSubsystem::Tick(float DeltaTime)
 }
 ```
 
-## Lab 2 - Puzzles
+## Lab 2 - Puzzles ([lab-2](https://github.com/rh5140/tac438-labs/tree/lab2))
 - Implemented extensible Puzzle Component in C++ using delegates ([PuzzleComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/PuzzleComponent.h), [PuzzleComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/PuzzleComponent.cpp))
 - Scripted Blueprint Puzzle extensions (AND, OR, Sequence, Frequency)
 - [Demo video](https://youtu.be/4yjlN7vv5L0)
@@ -113,7 +167,7 @@ void UPuzzleComponent::PuzzleReset()
 }
 ```
 
-## Lab 1 - Unreal Basics
+## Lab 1 - Unreal Basics ([lab-1](https://github.com/rh5140/tac438-labs/tree/lab1))
 - Created HUD with watermark ([TopDown.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDown.h), [TopDown.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDown.cpp))
 - Modified top-down controller to use WASD controls with Enhanced Input Plugin ([TopDownPlayerController.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownPlayerController.h), [TopDownPlayerController.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDown.cpp))
 - Implemented box trigger that changes the character's color ([TopDownCharacter.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownCharacter.cpp))
