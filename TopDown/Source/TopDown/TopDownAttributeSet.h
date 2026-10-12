@@ -30,8 +30,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData MoveSpeed;
 	
+	// Damage
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Damage;
+	
 	// Define getters/setters
 	ATTRIBUTE_ACCESSORS_BASIC(UTopDownAttributeSet, Health);
 	ATTRIBUTE_ACCESSORS_BASIC(UTopDownAttributeSet, MaxHealth);
 	ATTRIBUTE_ACCESSORS_BASIC(UTopDownAttributeSet, MoveSpeed);
+	ATTRIBUTE_ACCESSORS_BASIC(UTopDownAttributeSet, Damage);
+	
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 };

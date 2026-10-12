@@ -114,6 +114,27 @@ bool ATopDownCharacter::TryActivateAbility(const FName& AbilityName)
 	return false;
 }
 
+void ATopDownCharacter::HandleDamage(float Amount, float NewHealth)
+{
+	if (NewHealth == 0.0f)
+	{
+		TryActivateAbility("Death");
+	}
+}
+
+void ATopDownCharacter::EnableRagdoll()
+{
+	// Turn on physics on SkeletalMeshComponent to ragdoll
+	USkeletalMeshComponent* SMC = GetMesh();
+	SMC->SetSimulatePhysics(true);
+	SMC->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	SMC->SetAllBodiesSimulatePhysics(true);
+	SMC->SetAllBodiesPhysicsBlendWeight(1.0f);
+	
+	// Disable collision on capsule
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
 void ATopDownCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
 {
 	Super::OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);

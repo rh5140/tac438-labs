@@ -86,6 +86,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Abilities)
 	bool TryActivateAbility(const FName& AbilityName);
 	
+	// Called from AttributeSet when damage is taken
+	void HandleDamage(float Amount, float NewHealth);
+	
+	// Called to enable ragdoll on character
+	UFUNCTION(BlueprintCallable, Category=Abilities)
+	void EnableRagdoll();
+	
 protected:
 	/** Number of blue triggers player is overlapping */
 	UPROPERTY(BlueprintReadOnly)
