@@ -1,6 +1,60 @@
 # tac438-labs
 Following along with USC's course on [Advanced Gameplay Programming in Unreal Engine](https://tac438-20263.github.io/)
 
+## Lab 5 - GAS and Animations
+- Set up animations and GAS with C++ classes for Top Down Attribute Set ([TopDownAttributeSet.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAttributeSet.h), [TopDownAttributeSet.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAttributeSet.cpp)) and Top Down Ability System Component ([TopDownAbilitySystemComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAbilitySystemComponent.h), [TopDownAbilitySystemComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAbilitySystemComponent.cpp))
+- Implement subclasses for AnimNotifyState ([AnimNotifyState_ApplyEffect.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/AnimNotifyState_ApplyEffect.h), [AnimNotifyState_ApplyEffect.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/AnimNotifyState_ApplyEffect.cpp)) and TriggerBox ([TriggerBox_GameEffect.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TriggerBox_GameEffect.h), [TriggerBox_GameEffect.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TriggerBox_GameEffect.cpp)) to apply Gameplay Effects
+- Implement crouch/uncrouch with Gameplay Effect (cut move speed in half), Animation Montage, and Anim Notify (prevent crouch/uncrouch spam)
+```cpp
+void ATopDownPlayerController::OnCrouchAction(const FInputActionInstance& Instance)
+{
+	if (ATopDownCharacter* TopDownChar = UTopDownBPLibrary::GetTopDownCharacter(this, 0))
+	{
+		const FGameplayTag ImmobileTag = FGameplayTag::RequestGameplayTag("Debuff.Immobile", false);
+		if (TopDownChar->AbilitySystemComponent->HasMatchingGameplayTag(ImmobileTag))
+			return;
+	}
+	
+	if (ACharacter* MyCharacter = GetCharacter())
+	{
+		if (MyCharacter->IsCrouched())
+		{
+			MyCharacter->UnCrouch();
+		}
+		else
+		{
+			MyCharacter->Crouch();
+		}
+	}
+}
+```
+```cpp
+void ATopDownCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	Super::OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	
+	// Apply crouching effect
+	FGameplayEffectContextHandle ContextHandle;
+	CrouchingEffectHandle = AbilitySystemComponent->BP_ApplyGameplayEffectToSelf(CrouchingEffect, 0.0f, ContextHandle);
+}
+
+void ATopDownCharacter::OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	Super::OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	
+	// Remove crouching effect
+	AbilitySystemComponent->RemoveActiveGameplayEffect(CrouchingEffectHandle);
+	CrouchingEffectHandle.Invalidate();
+}
+```
+- Implement dash ability with Gameplay Ability, Animation Montage, Anim Notifies (play sound, enable i-frames), and Gameplay Cue (i-frame)
+- Implement burning Gameplay Effect applied by TriggerBox_ApplyEffect
+- Implement death with Gameplay Ability, Animation Montage, and ragdolling mesh in C++
+  - <img width="2278" height="1078" alt="image" src="https://github.com/user-attachments/assets/ccb7bcbb-a0b8-4508-9ad2-0bb4e71d4688" />
+
+- [Demo video](https://youtu.be/ofE2rMG-hUM)
+
+
 ## Lab 4 - Physics and Sequences
 - Script pressure plate and swing in Blueprints
 - Create physics-based puzzles that require spreading fire to solve
