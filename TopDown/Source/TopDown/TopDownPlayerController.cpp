@@ -35,17 +35,6 @@ void ATopDownPlayerController::OnPossess(APawn* InPawn)
 		HUDWidgetInstance = NewObject<UHUDWidget>(this, HUDWidgetClass);
 		HUDWidgetInstance->AddToViewport();
 	}
-	
-	if (MenuWidgetClass)
-	{
-		MenuInstance = NewObject<UTopDownMenu>(this, MenuWidgetClass);
-		MenuInstance->AddToViewport();
-	
-		// Set owning player controller to accept input
-		MenuInstance->SetOwningPlayer(this);
-		// Input is only routed to UI to specified widget
-		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, MenuInstance);
-	}
 }
 
 void ATopDownPlayerController::SetupInputComponent()
@@ -141,5 +130,19 @@ void ATopDownPlayerController::OnDashAction(const FInputActionInstance& Instance
 	if (ATopDownCharacter* TopDownChar = UTopDownBPLibrary::GetTopDownCharacter(this, 0))
 	{
 		TopDownChar->TryActivateAbility("Dash");
+	}
+}
+
+void ATopDownPlayerController::ActivateGameOverMenu()
+{
+	if (MenuWidgetClass)
+	{
+		MenuInstance = NewObject<UTopDownMenu>(this, MenuWidgetClass);
+		MenuInstance->AddToViewport();
+	
+		// Set owning player controller to accept input
+		MenuInstance->SetOwningPlayer(this);
+		// Input is only routed to UI to specified widget
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, MenuInstance);
 	}
 }

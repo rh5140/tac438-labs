@@ -77,6 +77,9 @@ protected:
 	UPROPERTY(Transient)
 	TObjectPtr<class UTopDownMenu> MenuInstance;
 	
+	UFUNCTION(BlueprintCallable)
+	void ActivateGameOverMenu();
+	
 private:
 };
 
