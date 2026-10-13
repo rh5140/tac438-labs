@@ -93,6 +93,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category=Abilities)
 	void EnableRagdoll();
 	
+	float GetCurrentHealth();
+	float GetHealthPct();
+	
 protected:
 	/** Number of blue triggers player is overlapping */
 	UPROPERTY(BlueprintReadOnly)

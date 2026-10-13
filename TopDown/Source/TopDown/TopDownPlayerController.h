@@ -29,6 +29,13 @@ public:
 	ATopDownPlayerController();
 	
 protected:
+	virtual void BeginPlay() override;
+	
+	virtual void OnPossess(APawn* InPawn) override;
+	
+	/** Initialize input bindings */
+	virtual void SetupInputComponent() override;
+	
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
@@ -51,15 +58,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
 	TObjectPtr<class UInputAction> DashAction;
 	
-	/** Initialize input bindings */
-	virtual void SetupInputComponent() override;
-	
 	void OnJumpAction();
 	void OnMoveForward(const FInputActionInstance& Instance);
 	void OnMoveRight(const FInputActionInstance& Instance);
 	void OnInteractAction(const FInputActionInstance& Instance);
 	void OnCrouchAction(const FInputActionInstance& Instance);
 	void OnDashAction(const FInputActionInstance& Instance);
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UHUDWidget> HUDWidgetClass;
+
+	UPROPERTY(Transient)
+	TObjectPtr<class UHUDWidget> HUDWidgetInstance;
+	
+private:
 };
 
 

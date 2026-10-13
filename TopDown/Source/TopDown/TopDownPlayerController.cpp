@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
+#include "HUDWidget.h"
 #include "InteractSubsystem.h"
 #include "Engine/LocalPlayer.h"
 #include "TopDown.h"
@@ -16,6 +17,22 @@
 ATopDownPlayerController::ATopDownPlayerController()
 {
 	bShowMouseCursor = false;
+}
+
+void ATopDownPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void ATopDownPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	
+	if (HUDWidgetClass)
+	{
+		HUDWidgetInstance = NewObject<UHUDWidget>(this, HUDWidgetClass);
+		HUDWidgetInstance->AddToViewport();
+	}
 }
 
 void ATopDownPlayerController::SetupInputComponent()

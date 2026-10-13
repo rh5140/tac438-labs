@@ -2,7 +2,6 @@
 
 #include "TopDownCharacter.h"
 
-#include "AIController.h"
 #include "TopDownAbilitySystemComponent.h"
 #include "TopDownAttributeSet.h"
 #include "TopDownCharMovementComponent.h"
@@ -133,6 +132,18 @@ void ATopDownCharacter::EnableRagdoll()
 	
 	// Disable collision on capsule
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+float ATopDownCharacter::GetCurrentHealth()
+{
+	return DefaultAttributeSet->GetHealth();
+}
+
+float ATopDownCharacter::GetHealthPct()
+{
+	float CurrentHealth = DefaultAttributeSet->GetHealth();
+	float MaxHealth = DefaultAttributeSet->GetMaxHealth();
+	return CurrentHealth / MaxHealth;
 }
 
 void ATopDownCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
