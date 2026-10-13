@@ -13,6 +13,8 @@
 #include "Engine/LocalPlayer.h"
 #include "TopDown.h"
 #include "TopDownBPLibrary.h"
+#include "TopDownMenu.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 ATopDownPlayerController::ATopDownPlayerController()
 {
@@ -32,6 +34,17 @@ void ATopDownPlayerController::OnPossess(APawn* InPawn)
 	{
 		HUDWidgetInstance = NewObject<UHUDWidget>(this, HUDWidgetClass);
 		HUDWidgetInstance->AddToViewport();
+	}
+	
+	if (MenuWidgetClass)
+	{
+		MenuInstance = NewObject<UTopDownMenu>(this, MenuWidgetClass);
+		MenuInstance->AddToViewport();
+	
+		// Set owning player controller to accept input
+		MenuInstance->SetOwningPlayer(this);
+		// Input is only routed to UI to specified widget
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this, MenuInstance);
 	}
 }
 

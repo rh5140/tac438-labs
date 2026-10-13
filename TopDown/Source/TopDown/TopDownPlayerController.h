@@ -71,6 +71,12 @@ protected:
 	UPROPERTY(Transient)
 	TObjectPtr<class UHUDWidget> HUDWidgetInstance;
 	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UTopDownMenu> MenuWidgetClass;
+
+	UPROPERTY(Transient)
+	TObjectPtr<class UTopDownMenu> MenuInstance;
+	
 private:
 };
 
