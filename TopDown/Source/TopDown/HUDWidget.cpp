@@ -32,5 +32,25 @@ void UHUDWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 		{
 			HealthBar->SetFillColorAndOpacity(CriticalHealthColor);
 		}
+		
+		int CurrentThreatLevel = TopDownChar->CalculateThreatLevel();
+		switch (CurrentThreatLevel)
+		{
+		case 0: 
+			StealthIndicator->SetColorAndOpacity(FLinearColor::Green);
+			break;
+		case 1:
+			StealthIndicator->SetColorAndOpacity(FLinearColor::Blue);
+			break;
+		case 2:
+			StealthIndicator->SetColorAndOpacity(FLinearColor::Yellow);
+			break;
+		case 4:
+			StealthIndicator->SetColorAndOpacity(FLinearColor(FColor::Purple));
+			break;
+		default:
+			StealthIndicator->SetColorAndOpacity(FLinearColor::Red);
+			break;
+		}
 	}
 }

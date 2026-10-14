@@ -32,4 +32,7 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	FLinearColor CriticalHealthColor = FLinearColor::Red;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<class UTextBlock> StealthIndicator;
 };

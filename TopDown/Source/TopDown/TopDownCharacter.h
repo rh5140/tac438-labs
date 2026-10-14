@@ -20,7 +20,7 @@ UCLASS()
 class ATopDownCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
-
+	
 public:
 	/** Constructor */
 	ATopDownCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -100,6 +100,10 @@ public:
 	// Combat-related number popup
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UWidgetComponent> CombatTextWidget;
+
+	int DEFAULT_THREAT_LEVEL = 3;
+	// Calculate current threat level
+	int CalculateThreatLevel();
 	
 protected:
 	/** Number of blue triggers player is overlapping */
@@ -116,6 +120,7 @@ protected:
 	// Current Gameplay Abilities (do not directly modify)
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Abilities)
 	TMap<FName, TSubclassOf<class UGameplayAbility>> GameplayAbilities;
+
 
 private:
 	/** Top down camera */

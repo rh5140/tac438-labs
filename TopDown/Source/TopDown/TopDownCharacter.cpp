@@ -157,6 +157,35 @@ float ATopDownCharacter::GetHealthPct()
 	return CurrentHealth / MaxHealth;
 }
 
+int ATopDownCharacter::CalculateThreatLevel()
+{
+	int NewThreatLevel = DEFAULT_THREAT_LEVEL;
+	
+	// Increase by 1 if character is moving
+	if (!GetCharacterMovement()->Velocity.IsZero())
+	{
+		NewThreatLevel++;
+	}
+	
+	// Decrease by 1 if character is crouching
+	if (GetCharacterMovement()->IsCrouching())
+	{
+		NewThreatLevel--;
+	}
+	
+	// Decrease by 1 per stealth trigger
+	const FGameplayTag StealthTag = FGameplayTag::RequestGameplayTag("Buff.Stealth", false);
+	NewThreatLevel -= AbilitySystemComponent->GetGameplayTagCount(StealthTag);
+	
+	// Prevent negative value
+	if (NewThreatLevel < 0)
+	{
+		NewThreatLevel = 0;
+	}
+	
+	return NewThreatLevel;
+}
+
 void ATopDownCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
 {
 	Super::OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
