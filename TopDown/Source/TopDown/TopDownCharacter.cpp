@@ -2,12 +2,14 @@
 
 #include "TopDownCharacter.h"
 
+#include "CombatTextWidget.h"
 #include "TopDownAbilitySystemComponent.h"
 #include "TopDownAttributeSet.h"
 #include "TopDownCharMovementComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -48,7 +50,11 @@ ATopDownCharacter::ATopDownCharacter(const FObjectInitializer& ObjectInitializer
 	
 	AbilitySystemComponent = CreateDefaultSubobject<UTopDownAbilitySystemComponent>(TEXT("AbilitySystem"));
 	DefaultAttributeSet = CreateDefaultSubobject<UTopDownAttributeSet>(TEXT("DefaultAttributeSet"));
-
+	
+	CombatTextWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("CombatTextWidget"));
+	CombatTextWidget->SetupAttachment(RootComponent);
+	CombatTextWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -115,6 +121,11 @@ bool ATopDownCharacter::TryActivateAbility(const FName& AbilityName)
 
 void ATopDownCharacter::HandleDamage(float Amount, float NewHealth)
 {
+	if (UCombatTextWidget* CombatWidget = Cast<UCombatTextWidget>(CombatTextWidget->GetWidget()))
+	{
+		CombatWidget->ShowDamage(Amount);
+	}
+	
 	if (NewHealth == 0.0f)
 	{
 		TryActivateAbility("Death");

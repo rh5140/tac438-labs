@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "ActiveGameplayEffectHandle.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "TopDownCharacter.generated.h"
 
@@ -95,6 +96,10 @@ public:
 	
 	float GetCurrentHealth();
 	float GetHealthPct();
+	
+	// Combat-related number popup
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UWidgetComponent> CombatTextWidget;
 	
 protected:
 	/** Number of blue triggers player is overlapping */
