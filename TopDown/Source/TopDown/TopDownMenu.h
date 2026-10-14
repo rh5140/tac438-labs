@@ -28,6 +28,10 @@ protected:
 	// Called when changing selection index
 	void SetSelectedIndex(int InSelectedIndex);
 	
+	virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	
 private:
 	int SelectedIndex = 0;
 	TArray<TWeakObjectPtr<class UTopDownButton>> Buttons;

@@ -67,3 +67,30 @@ void UTopDownMenu::SetSelectedIndex(int InSelectedIndex)
 		Buttons[SelectedIndex].Get()->NativeSetSelection(true);
 	}
 }
+
+FReply UTopDownMenu::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	for (int i = 0; i < Buttons.Num(); i++)
+	{
+		FGeometry ButtonGeometry = Buttons[i]->GetCachedGeometry();
+		UE::Slate::FDeprecateVector2DResult CurrentMousePosition = InMouseEvent.FPointerEvent::GetScreenSpacePosition();
+		if (ButtonGeometry.IsUnderLocation(CurrentMousePosition))
+		{
+			SetSelectedIndex(i);
+		}
+	}
+	return FReply::Handled();
+}
+
+FReply UTopDownMenu::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	for (auto Button : Buttons)
+	{
+		FGeometry ButtonGeometry = Button->GetCachedGeometry();
+		UE::Slate::FDeprecateVector2DResult CurrentMousePosition = InMouseEvent.FPointerEvent::GetScreenSpacePosition();
+		if (ButtonGeometry.IsUnderLocation(CurrentMousePosition))
+		{
+			Button.Get()->NativeActivated();
+		}
+	}
+	return FReply::Handled();}
