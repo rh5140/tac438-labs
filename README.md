@@ -1,6 +1,18 @@
 # tac438-labs
 Following along with USC's course on [Advanced Gameplay Programming in Unreal Engine](https://tac438-20263.github.io/)
 
+## Lab 6 - UI ([lab-5](https://github.com/rh5140/tac438-labs/tree/lab6))
+- Implement C++ subclasses of User Widgets to create UI
+  - Buttons ([TopDownButton.h](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownButton.h), [TopDownButton.cpp](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownButton.cpp))
+  - Game over menu ([TopDownMenu.h](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownMenu.h), [TopDownMenu.cpp](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownMenu.cpp))
+  - Damage numbers ([CombatTextWidget.h](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/CombatTextWidget.h), [CombatTextWidget.cpp](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/CombatTextWidget.cpp))
+  - HUD with healthbar and stealth indicator ([TopDownHUD.h](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownHUD.h), [TopDownHUD.cpp](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownHUD.cpp))
+
+<img width="2214" height="1365" alt="image" style="width:50%;height:auto" src="https://github.com/user-attachments/assets/3163e595-1157-4f50-8510-b424deced5c1" /><img width="2196" height="1362" alt="image" style="width:50%;height:auto" src="https://github.com/user-attachments/assets/402d5687-e2b0-448f-b19e-a7da35f245dc" />
+ - Update Top Down Character to track threat level with asterisk (*) on HUD ([TopDownCharacter.h](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownCharacter.h), [TopDownCharacter.cpp](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownCharacter.cpp))
+
+- [Demo video](https://youtu.be/NVTr1NMwCqM)
+
 ## Lab 5 - GAS and Animations ([lab-5](https://github.com/rh5140/tac438-labs/tree/lab5))
 - Set up animations and GAS with C++ classes for Top Down Attribute Set ([TopDownAttributeSet.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAttributeSet.h), [TopDownAttributeSet.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAttributeSet.cpp)) and Top Down Ability System Component ([TopDownAbilitySystemComponent.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAbilitySystemComponent.h), [TopDownAbilitySystemComponent.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TopDownAbilitySystemComponent.cpp))
 - Implement subclasses for AnimNotifyState ([AnimNotifyState_ApplyEffect.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/AnimNotifyState_ApplyEffect.h), [AnimNotifyState_ApplyEffect.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/AnimNotifyState_ApplyEffect.cpp)) and TriggerBox ([TriggerBox_GameEffect.h](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TriggerBox_GameEffect.h), [TriggerBox_GameEffect.cpp](https://github.com/rh5140/tac438-labs/blob/main/TopDown/Source/TopDown/TriggerBox_GameEffect.cpp)) to apply Gameplay Effects
