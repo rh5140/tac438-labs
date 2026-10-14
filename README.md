@@ -1,7 +1,7 @@
 # tac438-labs
 Following along with USC's course on [Advanced Gameplay Programming in Unreal Engine](https://tac438-20263.github.io/)
 
-## Lab 6 - UI ([lab-5](https://github.com/rh5140/tac438-labs/tree/lab6))
+## Lab 6 - UI ([lab-6](https://github.com/rh5140/tac438-labs/tree/lab6))
 - Implement C++ subclasses of User Widgets to create UI
   - Buttons ([TopDownButton.h](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownButton.h), [TopDownButton.cpp](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownButton.cpp))
   - Game over menu ([TopDownMenu.h](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownMenu.h), [TopDownMenu.cpp](https://github.com/rh5140/tac438-labs/blob/lab6/TopDown/Source/TopDown/TopDownMenu.cpp))
